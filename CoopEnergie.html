@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CoopÉnergie — L'énergie par la communauté</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #000;
+  --purple: #8b5cf6;
+  --purple-dark: #7c3aed;
+  --cyan: #2dd4bf;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --muted-2: #94a3b8;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ═══════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════ */
+.grad-text {
+  background: linear-gradient(135deg, #8b5cf6 0%, #2dd4bf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+}
+.glass:hover { border-color: rgba(139,92,246,0.28); transform: translateY(-2px); transition: border-color .25s, transform .25s; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* Fade-in on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .7s cubic-bezier(.25,.46,.45,.94), transform .7s cubic-bezier(.25,.46,.45,.94);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .18s; }
+.reveal-delay-3 { transition-delay: .26s; }
+.reveal-delay-4 { transition-delay: .34s; }
+.reveal-delay-5 { transition-delay: .42s; }
+.reveal-delay-6 { transition-delay: .50s; }
+
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.btn:hover { transform: scale(1.03); }
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(139,92,246,.38), 0 0 48px rgba(139,92,246,.1);
+  border: 1px solid rgba(139,92,246,.4);
+}
+.btn-primary:hover { box-shadow: 0 0 36px rgba(139,92,246,.55), 0 0 72px rgba(139,92,246,.18); }
+.btn-ghost {
+  background: rgba(255,255,255,.04);
+  color: #cbd5e1;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); }
+
+/* ═══════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════ */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 16px 0;
+  transition: background .4s, backdrop-filter .4s, border-color .4s;
+}
+#navbar.scrolled {
+  background: rgba(0,0,0,.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+}
+.logo-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #2dd4bf);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.logo-icon::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 10px;
+  background: inherit;
+  filter: blur(8px);
+  opacity: .5;
+  z-index: -1;
+}
+.logo-icon svg { width: 18px; height: 18px; color: #fff; }
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 14px;
+  color: var(--muted-2);
+  position: relative;
+  transition: color .2s;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, #8b5cf6, #2dd4bf);
+  transition: width .3s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta { display: flex; }
+
+/* Mobile burger */
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+.burger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  background: rgba(0,0,0,.97);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 20px 24px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: #cbd5e1;
+  font-size: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.mobile-menu a:last-child { border-bottom: none; }
+.mobile-menu .btn { margin-top: 16px; justify-content: center; }
+
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .burger { display: flex; }
+}
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 0 60px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.blob-1 {
+  width: 600px; height: 600px;
+  top: -100px; left: -100px;
+  background: radial-gradient(circle, rgba(139,92,246,.25), transparent 70%);
+  animation: blobMove1 9s ease-in-out infinite;
+}
+.blob-2 {
+  width: 500px; height: 500px;
+  bottom: -50px; right: -50px;
+  background: radial-gradient(circle, rgba(45,212,191,.18), transparent 70%);
+  animation: blobMove2 11s ease-in-out infinite;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(139,92,246,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+@keyframes blobMove1 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px, 30px) scale(1.1); }
+  66% { transform: translate(-20px, 50px) scale(.95); }
+}
+@keyframes blobMove2 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-40px, -30px) scale(1.15); }
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(139,92,246,.1);
+  border: 1px solid rgba(139,92,246,.3);
+  color: #a78bfa;
+  margin-bottom: 28px;
+  letter-spacing: .02em;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #a78bfa;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.8); }
+}
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--muted-2);
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.65;
+}
+.hero-sub strong { color: #cbd5e1; font-weight: 500; }
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 440px;
+  margin: 56px auto 0;
+}
+.stat-item { text-align: center; }
+.stat-val {
+  font-family: var(--font-head);
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  font-weight: 800;
+  color: #fff;
+}
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, rgba(139,92,246,.7), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scaleY(1); }
+  50% { opacity: .4; transform: translateX(-50%) scaleY(.6); }
+}
+
+/* ═══════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════ */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #a78bfa;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--muted-2);
+  max-width: 500px;
+  margin: 12px auto 0;
+  line-height: 1.65;
+}
+
+/* ═══════════════════════════════════════
+   PROBLEM / SOLUTION
+═══════════════════════════════════════ */
+#fonctionnement { padding: 110px 0; }
+.section-head-center { text-align: center; margin-bottom: 56px; }
+.ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 768px) { .ps-grid { grid-template-columns: 1fr; } }
+.ps-card { padding: 32px; }
+.ps-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.ps-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ps-icon-problem { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.2); }
+.ps-icon-solution { background: rgba(45,212,191,.1); border: 1px solid rgba(45,212,191,.2); }
+.ps-meta-tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.ps-card-title {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+.ps-card-problem { border-color: rgba(239,68,68,.2) !important; }
+.ps-card-solution { border-color: rgba(45,212,191,.25) !important; }
+.ps-list { list-style: none; }
+.ps-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  font-size: 14px;
+}
+.ps-list li:last-child { border-bottom: none; }
+.ps-list-problem li { color: #94a3b8; }
+.ps-list-solution li { color: #cbd5e1; }
+.ps-icon-bullet { flex-shrink: 0; }
+.ps-note {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.ps-note-problem { background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.1); color: #fca5a5; }
+.ps-note-solution { background: rgba(45,212,191,.06); border: 1px solid rgba(45,212,191,.15); color: #5eead4; }
+
+/* ═══════════════════════════════════════
+   FEATURES
+═══════════════════════════════════════ */
+#vision { padding: 110px 0; }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .features-grid { grid-template-columns: 1fr; } }
+.feat-card { padding: 28px; cursor: default; }
+.feat-icon {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  transition: transform .3s;
+}
+.feat-card:hover .feat-icon { transform: scale(1.12); }
+.feat-title {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.feat-desc { font-size: 14px; color: var(--muted-2); line-height: 1.65; }
+
+/* ═══════════════════════════════════════
+   DASHBOARD PREVIEW
+═══════════════════════════════════════ */
+#sécurité { padding: 110px 0; }
+.dashboard-wrap {
+  border: 1px solid rgba(139,92,246,.22);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 80px rgba(139,92,246,.1), 0 0 160px rgba(45,212,191,.05);
+}
+.dash-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,.025);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.dash-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.dot-r { background: rgba(239,68,68,.6); }
+.dot-y { background: rgba(234,179,8,.6); }
+.dot-g { background: rgba(34,197,94,.6); }
+.dash-url {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #475569;
+  background: rgba(255,255,255,.04);
+  border-radius: 6px;
+  padding: 4px 12px;
+  max-width: 240px;
+  margin: 0 auto;
+}
+.dash-body {
+  background: rgba(0,0,0,.6);
+  padding: 36px 36px;
+}
+.dash-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.dash-coop-name {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+}
+.dash-cycle { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.dash-secure-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(45,212,191,.1);
+  border: 1px solid rgba(45,212,191,.3);
+  color: #2dd4bf;
+}
+.badge-pulse { width: 6px; height: 6px; border-radius: 50%; background: #2dd4bf; animation: pulse 2s infinite; }
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+@media (max-width: 640px) { .dash-stats { grid-template-columns: repeat(2, 1fr); } .dash-body { padding: 24px 20px; } }
+.dash-stat {
+  padding: 16px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px;
+}
+.dash-stat-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.dash-stat-val {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 800;
+}
+.dash-stat-unit { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.dash-progress-section { margin-bottom: 28px; }
+.dash-prog-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.dash-prog-label { color: #94a3b8; }
+.dash-prog-pct { font-family: var(--font-head); font-weight: 800; color: #fff; }
+.dash-prog-bar {
+  height: 10px;
+  background: rgba(255,255,255,.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.dash-prog-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #8b5cf6, #2dd4bf);
+  border-radius: 99px;
+  transition: width 1.6s cubic-bezier(.25,.46,.45,.94);
+}
+.dash-prog-range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.dash-members-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.dash-members { display: flex; flex-direction: column; gap: 8px; }
+.dash-member {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.04);
+  border-radius: 10px;
+}
+.member-left { display: flex; align-items: center; gap: 12px; }
+.member-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(139,92,246,.15);
+  color: #a78bfa;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-head);
+}
+.member-name { font-size: 14px; color: #cbd5e1; }
+.member-right { display: flex; align-items: center; gap: 12px; }
+.member-amount { font-size: 13px; color: #94a3b8; }
+.member-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 99px;
+}
+.status-paid { background: rgba(45,212,191,.1); color: #2dd4bf; border: 1px solid rgba(45,212,191,.2); }
+.status-pending { background: rgba(234,179,8,.1); color: #facc15; border: 1px solid rgba(234,179,8,.2); }
+
+/* ═══════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════ */
+#temoignages { padding: 110px 0; }
+.stars { display: flex; gap: 3px; margin-bottom: 10px; }
+.star { color: #8b5cf6; font-size: 14px; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 900px) { .testi-grid { grid-template-columns: 1fr; } }
+.testi-card { padding: 28px; display: flex; flex-direction: column; }
+.testi-quote {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 20px;
+}
+.testi-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.testi-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(139,92,246,.15);
+  color: #a78bfa;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  font-family: var(--font-head);
+  flex-shrink: 0;
+}
+.testi-name { font-size: 14px; font-weight: 600; color: #fff; }
+.testi-role { font-size: 11px; color: var(--muted); }
+
+/* ═══════════════════════════════════════
+   CTA BANNER
+═══════════════════════════════════════ */
+#cta-section { padding: 60px 0 110px; }
+.cta-card {
+  text-align: center;
+  padding: 72px 40px;
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(139,92,246,.3) !important;
+  box-shadow: 0 0 60px rgba(139,92,246,.08);
+}
+.cta-glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(139,92,246,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+}
+.cta-sub {
+  font-size: 15px;
+  color: var(--muted-2);
+  max-width: 480px;
+  margin: 0 auto 32px;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+#footer {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 60px 0 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 260px;
+  margin-top: 12px;
+}
+.footer-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.social-btn {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, transform .2s;
+  font-size: 14px;
+}
+.social-btn:hover { color: #fff; border-color: rgba(139,92,246,.4); transform: scale(1.1); }
+.footer-col-title {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a {
+  font-size: 14px;
+  color: var(--muted);
+  transition: color .2s;
+}
+.footer-links a:hover { color: #e2e8f0; }
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.05);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-copy { font-size: 12px; color: #475569; }
+
+/* SVG icons inline */
+svg { display: inline-block; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<nav id="navbar" role="navigation" aria-label="Navigation principale">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="CoopÉnergie accueil">
+        <div class="logo-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </div>
+        Coop<span class="grad-text">Énergie</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#fonctionnement">Fonctionnement</a></li>
+        <li><a href="#sécurité">Sécurité</a></li>
+      </ul>
+      <div class="nav-cta">
+        <button class="btn btn-primary">Lancer ma Coopérative
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu mobile" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" role="menu">
+      <a href="#vision" role="menuitem">Vision</a>
+      <a href="#fonctionnement" role="menuitem">Fonctionnement</a>
+      <a href="#sécurité" role="menuitem">Sécurité</a>
+      <button class="btn btn-primary">Lancer ma Coopérative</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero" aria-labelledby="hero-title">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Beta ouverte — Cameroun 2025
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+      <h1 class="hero-title reveal reveal-delay-1" id="hero-title">
+        L'énergie par la <span class="grad-text">communauté</span>,<br/>
+        la confiance par <span class="grad-text">le code</span>
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">
+        CoopÉnergie révolutionne l'accès au solaire via la tontine décentralisée.
+        <strong>Transparence blockchain. Énergie collective.</strong>
+        Un avenir propre pour chaque communauté.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <button class="btn btn-primary">
+          Rejoindre la bêta
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn btn-ghost">
+          Voir la démo
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </button>
+      </div>
+      <div class="hero-stats reveal reveal-delay-4" role="list" aria-label="Statistiques clés">
+        <div class="stat-item" role="listitem">
+          <div class="stat-val" data-count="240" data-suffix="+">0+</div>
+          <div class="stat-label">Membres actifs</div>
+        </div>
+        <div class="stat-item" role="listitem">
+          <div class="stat-val" data-count="18" data-suffix="M FCFA">0M FCFA</div>
+          <div class="stat-label">Collectés</div>
+        </div>
+        <div class="stat-item" role="listitem">
+          <div class="stat-val" data-count="97" data-suffix="%">0%</div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator" aria-hidden="true"></div>
+</section>
+
+<!-- ═══════════════ PROBLÈME / SOLUTION ═══════════════ -->
+<section id="fonctionnement" aria-labelledby="ps-title">
+  <div class="container">
+    <div class="section-head-center reveal">
+      <p class="section-label">Le problème & la solution</p>
+      <h2 class="section-title" id="ps-title">La tontine réinventée pour <span class="grad-text">l'ère solaire</span></h2>
+    </div>
+    <div class="ps-grid">
+      <!-- Problem -->
+      <div class="glass ps-card ps-card-problem reveal reveal-delay-1">
+        <div class="ps-card-header">
+          <div class="ps-icon ps-icon-problem" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="ps-meta-tag">Avant</div>
+            <div class="ps-card-title">Tontine classique</div>
+          </div>
+        </div>
+        <ul class="ps-list ps-list-problem" role="list">
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>
+            Opacité totale des fonds collectés
+          </li>
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>
+            Aucun suivi en temps réel
+          </li>
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>
+            Risque de détournement élevé
+          </li>
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>
+            Accès inégal au crédit solaire
+          </li>
+        </ul>
+        <div class="ps-note ps-note-problem">
+          🇨🇲 65% des tontines camerounaises ont connu au moins un incident de confiance.
+        </div>
+      </div>
+      <!-- Solution -->
+      <div class="glass ps-card ps-card-solution reveal reveal-delay-2">
+        <div class="ps-card-header">
+          <div class="ps-icon ps-icon-solution" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="ps-meta-tag">Maintenant</div>
+            <div class="ps-card-title">CoopÉnergie</div>
+          </div>
+        </div>
+        <ul class="ps-list ps-list-solution" role="list">
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+            Registre blockchain immuable
+          </li>
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+            Dashboard en temps réel
+          </li>
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+            Smart contracts auditables
+          </li>
+          <li>
+            <span class="ps-icon-bullet" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+            Financement collectif équitable
+          </li>
+        </ul>
+        <div class="ps-note ps-note-solution">
+          ⚡ Chaque franc tracé. Chaque décision collective. Zéro opacité.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEATURES ═══════════════ -->
+<section id="vision" aria-labelledby="feat-title">
+  <div class="container">
+    <div class="section-head-center reveal">
+      <p class="section-label">Fonctionnalités clés</p>
+      <h2 class="section-title" id="feat-title">Tout ce dont votre coopérative a <span class="grad-text">besoin</span></h2>
+    </div>
+    <div class="features-grid" role="list">
+      <!-- 6 feature cards -->
+      <div class="glass feat-card reveal reveal-delay-1" role="listitem">
+        <div class="feat-icon" style="background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);box-shadow:0 0 18px rgba(139,92,246,.08)" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </div>
+        <div class="feat-title">Smart Contracts</div>
+        <p class="feat-desc">Chaque règle de la tontine est encodée dans un contrat intelligent immuable. Aucune manipulation possible.</p>
+      </div>
+      <div class="glass feat-card reveal reveal-delay-2" role="listitem">
+        <div class="feat-icon" style="background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.22);box-shadow:0 0 18px rgba(45,212,191,.07)" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="feat-title">Dashboard temps réel</div>
+        <p class="feat-desc">Suivez la collecte, les versements et le statut du projet solaire en temps réel depuis votre téléphone.</p>
+      </div>
+      <div class="glass feat-card reveal reveal-delay-3" role="listitem">
+        <div class="feat-icon" style="background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);box-shadow:0 0 18px rgba(139,92,246,.08)" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feat-title">Gouvernance collective</div>
+        <p class="feat-desc">Les décisions importantes sont soumises au vote des membres. La coopérative vous appartient.</p>
+      </div>
+      <div class="glass feat-card reveal reveal-delay-4" role="listitem">
+        <div class="feat-icon" style="background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.22);box-shadow:0 0 18px rgba(45,212,191,.07)" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="feat-title">Installation rapide</div>
+        <p class="feat-desc">De la création de votre coopérative à l'installation des panneaux : 90 jours en moyenne.</p>
+      </div>
+      <div class="glass feat-card reveal reveal-delay-5" role="listitem">
+        <div class="feat-icon" style="background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);box-shadow:0 0 18px rgba(139,92,246,.08)" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="feat-title">Accès universel</div>
+        <p class="feat-desc">Mobile-first, offline-capable. Fonctionne même avec une connexion 2G dans les zones rurales.</p>
+      </div>
+      <div class="glass feat-card reveal reveal-delay-6" role="listitem">
+        <div class="feat-icon" style="background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.22);box-shadow:0 0 18px rgba(45,212,191,.07)" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="feat-title">Sécurité multi-couche</div>
+        <p class="feat-desc">Authentification biométrique, chiffrement E2E, et audit trimestriel par des tiers indépendants.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DASHBOARD PREVIEW ═══════════════ -->
+<section id="sécurité" aria-labelledby="dash-title">
+  <div class="container">
+    <div class="section-head-center reveal">
+      <p class="section-label">Aperçu produit</p>
+      <h2 class="section-title" id="dash-title">Votre coopérative, <span class="grad-text">sous contrôle total</span></h2>
+      <p class="section-sub">Un dashboard pensé pour la clarté. Chaque membre voit exactement où en est le projet.</p>
+    </div>
+    <div class="dashboard-wrap reveal" id="dashboard-wrap">
+      <!-- Chrome -->
+      <div class="dash-chrome" aria-hidden="true">
+        <div class="dash-dot dot-r"></div>
+        <div class="dash-dot dot-y"></div>
+        <div class="dash-dot dot-g"></div>
+        <div class="dash-url">app.coopenenergie.cm/dashboard</div>
+      </div>
+      <!-- Body -->
+      <div class="dash-body">
+        <div class="dash-top">
+          <div>
+            <div class="dash-coop-name">Coopérative Soleil-Bafoussam</div>
+            <div class="dash-cycle">Cycle 3 · Novembre 2025</div>
+          </div>
+          <div class="dash-secure-badge">
+            <span class="badge-pulse" aria-hidden="true"></span>
+            Sécurisé par Blockchain
+          </div>
+        </div>
+        <!-- Stats -->
+        <div class="dash-stats" role="list" aria-label="Statistiques de la coopérative">
+          <div class="dash-stat" role="listitem">
+            <div class="dash-stat-label">Collecté</div>
+            <div class="dash-stat-val" style="color:#8b5cf6">3.375M</div>
+            <div class="dash-stat-unit">FCFA</div>
+          </div>
+          <div class="dash-stat" role="listitem">
+            <div class="dash-stat-label">Objectif</div>
+            <div class="dash-stat-val" style="color:#2dd4bf">4.5M</div>
+            <div class="dash-stat-unit">FCFA</div>
+          </div>
+          <div class="dash-stat" role="listitem">
+            <div class="dash-stat-label">Membres</div>
+            <div class="dash-stat-val" style="color:#8b5cf6">20</div>
+            <div class="dash-stat-unit">actifs</div>
+          </div>
+          <div class="dash-stat" role="listitem">
+            <div class="dash-stat-label">Prochain versement</div>
+            <div class="dash-stat-val" style="color:#2dd4bf">14j</div>
+            <div class="dash-stat-unit">restants</div>
+          </div>
+        </div>
+        <!-- Progress -->
+        <div class="dash-progress-section">
+          <div class="dash-prog-header">
+            <span class="dash-prog-label">Progression de la collecte</span>
+            <span class="dash-prog-pct" id="prog-pct">0%</span>
+          </div>
+          <div class="dash-prog-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="75% de l'objectif atteint">
+            <div class="dash-prog-fill" id="prog-fill"></div>
+          </div>
+          <div class="dash-prog-range">
+            <span>3 375 000 FCFA</span>
+            <span>4 500 000 FCFA</span>
+          </div>
+        </div>
+        <!-- Members -->
+        <div>
+          <div class="dash-members-label">Membres récents</div>
+          <div class="dash-members" role="list">
+            <div class="dash-member" role="listitem">
+              <div class="member-left">
+                <div class="member-avatar" aria-hidden="true">AK</div>
+                <span class="member-name">Awa K.</span>
+              </div>
+              <div class="member-right">
+                <span class="member-amount">45 000 FCFA</span>
+                <span class="member-status status-paid">Payé</span>
+              </div>
+            </div>
+            <div class="dash-member" role="listitem">
+              <div class="member-left">
+                <div class="member-avatar" aria-hidden="true">PN</div>
+                <span class="member-name">Paul N.</span>
+              </div>
+              <div class="member-right">
+                <span class="member-amount">45 000 FCFA</span>
+                <span class="member-status status-paid">Payé</span>
+              </div>
+            </div>
+            <div class="dash-member" role="listitem">
+              <div class="member-left">
+                <div class="member-avatar" aria-hidden="true">FD</div>
+                <span class="member-name">Fatima D.</span>
+              </div>
+              <div class="member-right">
+                <span class="member-amount">45 000 FCFA</span>
+                <span class="member-status status-pending">En attente</span>
+              </div>
+            </div>
+            <div class="dash-member" role="listitem">
+              <div class="member-left">
+                <div class="member-avatar" aria-hidden="true">JM</div>
+                <span class="member-name">Joseph M.</span>
+              </div>
+              <div class="member-right">
+                <span class="member-amount">45 000 FCFA</span>
+                <span class="member-status status-paid">Payé</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+<section id="temoignages" aria-labelledby="testi-title">
+  <div class="container">
+    <div class="section-head-center reveal">
+      <div class="stars" aria-label="5 étoiles" role="img">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <h2 class="section-title" id="testi-title">Ils nous font confiance</h2>
+    </div>
+    <div class="testi-grid" role="list">
+      <div class="glass testi-card reveal reveal-delay-1" role="listitem">
+        <div class="stars" aria-hidden="true"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-quote">"Pour la première fois, chaque membre de notre tontine peut voir en temps réel où va son argent. La confiance est revenue."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar" aria-hidden="true">MN</div>
+          <div>
+            <div class="testi-name">Marie-Claire Ngo</div>
+            <div class="testi-role">Présidente, Coopérative Soleil-Bafoussam</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass testi-card reveal reveal-delay-2" role="listitem">
+        <div class="stars" aria-hidden="true"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-quote">"CoopÉnergie est exactement ce dont l'Afrique centrale a besoin : fintech locale, impact réel, technologie internationale."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar" aria-hidden="true">ET</div>
+          <div>
+            <div class="testi-name">Dr. Emmanuel Tabi</div>
+            <div class="testi-role">Investisseur Impact, Douala</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass testi-card reveal reveal-delay-3" role="listitem">
+        <div class="stars" aria-hidden="true"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-quote">"Je vérifie mon téléphone chaque matin pour voir l'avancement. C'est comme suivre mon propre projet énergétique."</p>
+        <div class="testi-footer">
+          <div class="testi-avatar" aria-hidden="true">AO</div>
+          <div>
+            <div class="testi-name">Aïcha Oumarou</div>
+            <div class="testi-role">Membre fondatrice, Garoua</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA BANNER ═══════════════ -->
+<section id="cta-section">
+  <div class="container">
+    <div class="glass cta-card reveal">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <p class="section-label" style="position:relative">Rejoignez-nous</p>
+      <h2 class="cta-title">Prêt à lancer votre <span class="grad-text">coopérative solaire</span>&nbsp;?</h2>
+      <p class="cta-sub">En 10 minutes, créez votre coopérative, invitez vos membres et commencez à collecter vers votre avenir énergétique.</p>
+      <button class="btn btn-primary" style="font-size:15px;padding:14px 32px;position:relative">
+        Lancer ma Coopérative
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer id="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="display:inline-flex" aria-label="CoopÉnergie accueil">
+          <div class="logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+          </div>
+          Coop<span class="grad-text">Énergie</span>
+        </a>
+        <p>La première plateforme de tontine solaire décentralisée au Cameroun. Énergie collective, confiance numérique.</p>
+        <div class="footer-socials" role="list" aria-label="Réseaux sociaux">
+          <a href="#" class="social-btn" aria-label="Twitter" role="listitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="GitHub" role="listitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn" role="listitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Produit</div>
+        <ul class="footer-links" role="list">
+          <li><a href="#fonctionnement">Fonctionnement</a></li>
+          <li><a href="#sécurité">Sécurité</a></li>
+          <li><a href="#">Tarifs</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Entreprise</div>
+        <ul class="footer-links" role="list">
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 CoopÉnergie. Tous droits réservés.</span>
+      <span class="footer-copy">Made in Cameroon 🇨🇲 for the Future</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════
+   NAVBAR: SCROLL EFFECT + BURGER
+═══════════════════════════════════════ */
+const navbar = document.getElementById('navbar');
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobile-menu');
+
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+burger.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  burger.classList.toggle('open', isOpen);
+  burger.setAttribute('aria-expanded', isOpen);
+});
+
+// Close mobile menu on link click
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
+  });
+});
+
+/* ═══════════════════════════════════════
+   INTERSECTION OBSERVER: REVEAL
+═══════════════════════════════════════ */
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '-40px' });
+reveals.forEach(el => revealObserver.observe(el));
+
+/* ═══════════════════════════════════════
+   COUNTER ANIMATION
+═══════════════════════════════════════ */
+function animateCounter(el) {
+  const target = parseInt(el.dataset.count, 10);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1800;
+  const startTime = performance.now();
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(ease * target);
+    el.textContent = current + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = target + suffix;
+  }
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(entry.target);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+/* ═══════════════════════════════════════
+   DASHBOARD PROGRESS BAR ANIMATION
+═══════════════════════════════════════ */
+const dashWrap = document.getElementById('dashboard-wrap');
+const progFill = document.getElementById('prog-fill');
+const progPct = document.getElementById('prog-pct');
+let progAnimated = false;
+
+const dashObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !progAnimated) {
+      progAnimated = true;
+      let current = 0;
+      const target = 75;
+      const duration = 1600;
+      const startTime = performance.now();
+
+      function animateBar(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        current = Math.floor(ease * target);
+        progFill.style.width = current + '%';
+        progPct.textContent = current + '%';
+        const bar = progFill.closest('[role="progressbar"]');
+        if (bar) bar.setAttribute('aria-valuenow', current);
+        if (progress < 1) requestAnimationFrame(animateBar);
+        else {
+          progFill.style.width = '75%';
+          progPct.textContent = '75%';
+        }
+      }
+      requestAnimationFrame(animateBar);
+      dashObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+if (dashWrap) dashObserver.observe(dashWrap);
+
+/* ═══════════════════════════════════════
+   SMOOTH BUTTON HOVER GLOW
+═══════════════════════════════════════ */
+document.querySelectorAll('.btn-primary').forEach(btn => {
+  btn.addEventListener('mouseenter', () => {
+    btn.style.boxShadow = '0 0 36px rgba(139,92,246,.55), 0 0 72px rgba(139,92,246,.18)';
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.boxShadow = '0 0 24px rgba(139,92,246,.38), 0 0 48px rgba(139,92,246,.1)';
+  });
+});
+</script>
+</body>
+</html>
